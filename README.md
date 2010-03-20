@@ -57,6 +57,6 @@ you want. Go nuts.
 Contributing
 ============
 
-This is a simple plugin to solve a simple problem - but I welcome any changes or 
+This is a simple plugin to solve a simple problem - but I welcome any changes, especially with associated test cases.
 
 Copyright (c) 2010 Alexander Bartlow, released under the MIT license
