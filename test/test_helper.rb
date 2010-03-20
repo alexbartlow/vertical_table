@@ -28,6 +28,34 @@ ActiveRecord::Schema.define(:version => 0) do
   create_table :normals, :force => true do |t|
     t.string :name
   end
+  
+  create_table :db_objects, :force => true do |t|
+    t.string :type
+  end
+  
+  create_table :db_attributes, :force => true do |t|
+    t.integer :db_object_id
+    t.string :key
+    t.string :value
+  end
+end
+
+class DbObject < ActiveRecord::Base
+  has_many :db_attributes, :autosave => true
+  include VerticalTable::Attributes
+
+  def self.has_attributes(*attrs)
+    vertical_attributes_from(:db_attributes) do |v|
+      attrs.each do |a|
+        v.send(a, :key => a)
+      end
+    end
+  end
+end
+
+# id, db_object_id, key, value
+class DbAttribute < ActiveRecord::Base
+  belongs_to :db_object
 end
 
 class Vertical < ActiveRecord::Base
