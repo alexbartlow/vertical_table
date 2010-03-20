@@ -54,6 +54,53 @@ the formatting, and use
 There's nothing stopping you from using as many vertical table associations as
 you want. Go nuts.
 
+Total Insanity
+==============
+
+    create_table :db_objects, :force => true do |t|
+      t.string :type
+    end
+
+    create_table :db_attributes, :force => true do |t|
+      t.integer :db_object_id
+      t.string :key
+      t.string :value
+    end
+    
+    class DbObject < ActiveRecord::Base
+      has_many :db_attributes, :autosave => true
+      include VerticalTable::Attributes
+
+      def self.has_attributes(*attrs)
+        vertical_attributes_from(:db_attributes) do |v|
+          attrs.each do |a|
+            v.send(a, :key => a)
+          end
+        end
+      end
+    end
+
+    # id, db_object_id, key, value
+    class DbAttribute < ActiveRecord::Base
+      belongs_to :db_object
+    end
+    
+And now we can generate a bunch of schemaless classes:
+
+    Person = Class.new(DbObject) do
+      has_attributes :fname, :lname, :phone
+    end
+    
+    Driver = Class.new(Person) do
+      has_attributes :license_number
+    end
+    
+    Address = Class.new(DbObject) do
+      has_attributes :number, :street, :city, :state, :zip
+    end
+    
+Adding associations is an exercise to the reader.
+
 Contributing
 ============
 
