@@ -10,10 +10,10 @@ However, ActiveRecord doesn't tend to like these structures that are at best han
 Usage
 =====
 
-*  Create a +has\_many+ or +has\_and\_belongs\_to\_many+ association to use to
-hold all of your attributes, using the :autosave option.
-*  Include the VerticalTable::Attributes module in your class
-*  Declare all of the attributes to be stored in the vertical table inside a vertical\_attributes\_from block
+*  Create a `has_many` or `has_and_belongs_to_many` association to use to
+hold all of your attributes, using the `:autosave` option.
+*  Include the `VerticalTable::Attributes` module in your class
+*  Declare all of the attributes to be stored in the vertical table inside a `vertical_attributes_from` block
 
 Example
 =======
@@ -38,7 +38,7 @@ Example
     r.reload.stat_str #=> "18"
 
 Now, all of the methods declared inside of the vertical table block are
-available to the RolePlayingCharacter as if they were on the table in the
+available to the `RolePlayingCharacter` as if they were on the table in the
 first place.
 
 In addition, you can use a hash passed to each attribute declaration to create
