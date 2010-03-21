@@ -11,6 +11,7 @@ require 'vertical_table'
 config = YAML::load(IO.read(File.dirname(__FILE__) + '/database.yml'))
 ActiveRecord::Base.logger = Logger.new(File.dirname(__FILE__) + "/debug.log")
 ActiveRecord::Base.establish_connection(config['test'])
+ActiveRecord::Base.store_full_sti_class = true
 ActiveRecord::Schema.define(:version => 0) do
   create_table :verticals, :force => true do |t|
     t.integer :normal_id
@@ -38,6 +39,12 @@ ActiveRecord::Schema.define(:version => 0) do
     t.string :key
     t.string :value
   end
+  
+  create_table :db_associations, :force => true do |t|
+    t.string  :type
+    t.integer :parent_id
+    t.integer :child_id
+  end
 end
 
 class DbObject < ActiveRecord::Base
@@ -51,11 +58,38 @@ class DbObject < ActiveRecord::Base
       end
     end
   end
+  
+  def self.schemaless_has_many(assoc_name)
+    schemaless_symbol = (assoc_name.to_s + "_schemaless").to_sym
+    klass_name = assoc_name.to_s.classify
+    self.const_set(klass_name, Class.new(DbAssociation))
+    self.has_many schemaless_symbol, :class_name => klass_name, 
+      :foreign_key => :parent_id
+    self.has_many assoc_name,
+      :through => schemaless_symbol,
+      :source  => :child
+  end
+  
+  def self.schemaless_belongs_to(assoc_name)
+    schemaless_symbol = (assoc_name.to_s + "_schemaless").to_sym
+    klass_name = assoc_name.to_s.classify
+    self.const_set(klass_name, Class.new(DbAssociation))
+    self.has_many schemaless_symbol, :class_name => klass_name, 
+      :foreign_key => :parent_id
+    self.has_many assoc_name,
+      :through => schemaless_symbol,
+      :source  => :parent
+  end
 end
 
 # id, db_object_id, key, value
 class DbAttribute < ActiveRecord::Base
   belongs_to :db_object
+end
+
+class DbAssociation < ActiveRecord::Base
+  belongs_to :parent, :class_name => "DbObject"
+  belongs_to :child,  :class_name => "DbObject"
 end
 
 class Vertical < ActiveRecord::Base
