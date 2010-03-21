@@ -117,7 +117,7 @@ Total Insanity
       belongs_to :child,  :class_name => "DbObject"
     end
     
-And now we can generate a bunch of schemaless classes:
+And now we can generate a bunch of schemaless classes, complete with associations:
 
     class TotalInsanityTest < Test::Unit::TestCase
       include ActiveSupport::Testing::Assertions
