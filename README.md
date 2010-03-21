@@ -57,6 +57,8 @@ you want. Go nuts.
 Total Insanity
 ==============
 
+
+    ActiveRecord::Base.store_full_sti_class = true
     create_table :db_objects, :force => true do |t|
       t.string :type
     end
@@ -142,8 +144,6 @@ And now we can generate a bunch of schemaless classes:
         assert_equal 1, Person.find(p).shit.size
       end
     end
-    
-Adding associations is an exercise to the reader.
 
 Contributing
 ============
