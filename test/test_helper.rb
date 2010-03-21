@@ -59,7 +59,7 @@ class DbObject < ActiveRecord::Base
     end
   end
   
-  def self.schemaless_has_many(assoc_name)
+  def self.schemaless_association(assoc_name, source)
     schemaless_symbol = (assoc_name.to_s + "_schemaless").to_sym
     klass_name = assoc_name.to_s.classify
     self.const_set(klass_name, Class.new(DbAssociation))
@@ -67,18 +67,15 @@ class DbObject < ActiveRecord::Base
       :foreign_key => :parent_id
     self.has_many assoc_name,
       :through => schemaless_symbol,
-      :source  => :child
+      :source  => source
+  end
+  
+  def self.schemaless_has_many(assoc_name)
+    schemaless_association(assoc_name, :child)
   end
   
   def self.schemaless_belongs_to(assoc_name)
-    schemaless_symbol = (assoc_name.to_s + "_schemaless").to_sym
-    klass_name = assoc_name.to_s.classify
-    self.const_set(klass_name, Class.new(DbAssociation))
-    self.has_many schemaless_symbol, :class_name => klass_name, 
-      :foreign_key => :parent_id
-    self.has_many assoc_name,
-      :through => schemaless_symbol,
-      :source  => :parent
+    schemaless_association(assoc_name, :parent)
   end
 end
 

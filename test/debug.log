@@ -1400,3 +1400,101 @@
   [4;36;1mDbAttribute Create (0.1ms)[0m   [0;1mINSERT INTO "db_attributes" ("db_object_id", "key", "value") VALUES(3, 'fname', 'Alex')[0m
   [4;35;1mDbAttribute Create (0.1ms)[0m   [0mINSERT INTO "db_attributes" ("db_object_id", "key", "value") VALUES(3, 'lname', 'Bartlow')[0m
   [4;36;1mDbAttribute Create (0.1ms)[0m   [0;1mINSERT INTO "db_attributes" ("db_object_id", "key", "value") VALUES(3, 'phone', '8675309')[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mselect sqlite_version(*)[0m
+  [4;35;1mSQL (0.1ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "verticals" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "normal_id" integer, "category" varchar(255), "attribute" varchar(255), "value" varchar(255)) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "wierd_verticals" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "normal_id" integer, "preference_type" varchar(255), "setting" varchar(255)) [0m
+  [4;35;1mSQL (0.7ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "normals" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255)) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mCREATE TABLE "db_objects" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "type" varchar(255)) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "db_attributes" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "db_object_id" integer, "key" varchar(255), "value" varchar(255)) [0m
+  [4;35;1mSQL (0.5ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "db_associations" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "type" varchar(255), "parent_id" integer, "child_id" integer) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.7ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM "schema_migrations"[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mINSERT INTO "schema_migrations" (version) VALUES ('0')[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mselect sqlite_version(*)[0m
+  [4;35;1mSQL (0.1ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "verticals" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "normal_id" integer, "category" varchar(255), "attribute" varchar(255), "value" varchar(255)) [0m
+  [4;35;1mSQL (0.1ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "wierd_verticals" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "normal_id" integer, "preference_type" varchar(255), "setting" varchar(255)) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "normals" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255)) [0m
+  [4;35;1mSQL (0.6ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "db_objects" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "type" varchar(255)) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.8ms)[0m   [0;1mCREATE TABLE "db_attributes" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "db_object_id" integer, "key" varchar(255), "value" varchar(255)) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "db_associations" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "type" varchar(255), "parent_id" integer, "child_id" integer) [0m
+  [4;35;1mSQL (0.3ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.1ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT version FROM "schema_migrations"[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mINSERT INTO "schema_migrations" (version) VALUES ('0')[0m
+  [4;35;1mTotalInsanityTest::Person Create (0.1ms)[0m   [0mINSERT INTO "db_objects" ("type") VALUES('TotalInsanityTest::Person')[0m
+  [4;36;1mTotalInsanityTest::Crap Create (0.1ms)[0m   [0;1mINSERT INTO "db_objects" ("type") VALUES('TotalInsanityTest::Crap')[0m
+  [4;35;1mTotalInsanityTest::Person::Shit Create (0.1ms)[0m   [0mINSERT INTO "db_associations" ("type", "parent_id", "child_id") VALUES('TotalInsanityTest::Person::Shit', 1, 2)[0m
+  [4;36;1mTotalInsanityTest::Person Load (0.1ms)[0m   [0;1mSELECT * FROM "db_objects" WHERE ("db_objects"."id" = 1) AND ( ("db_objects"."type" = 'TotalInsanityTest::Person' ) ) [0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT count(*) AS count_all FROM "db_objects" INNER JOIN "db_associations" ON "db_objects".id = "db_associations".child_id WHERE (("db_associations".parent_id = 1) AND (( ("db_associations"."type" = 'TotalInsanityTest::Person::Shit' ) ))) [0m
+  [4;36;1mDbAttribute Load (0.1ms)[0m   [0;1mSELECT * FROM "db_attributes" WHERE ("db_attributes".db_object_id = NULL) [0m
+  [4;35;1mDbAttribute Load (0.1ms)[0m   [0mSELECT * FROM "db_attributes" WHERE ("db_attributes".db_object_id = NULL) [0m
+  [4;36;1mDbAttribute Load (0.1ms)[0m   [0;1mSELECT * FROM "db_attributes" WHERE ("db_attributes".db_object_id = NULL) [0m
+  [4;35;1mTotalInsanityTest::Person Create (0.1ms)[0m   [0mINSERT INTO "db_objects" ("type") VALUES('TotalInsanityTest::Person')[0m
+  [4;36;1mDbAttribute Create (0.1ms)[0m   [0;1mINSERT INTO "db_attributes" ("db_object_id", "key", "value") VALUES(3, 'fname', 'Alex')[0m
+  [4;35;1mDbAttribute Create (0.1ms)[0m   [0mINSERT INTO "db_attributes" ("db_object_id", "key", "value") VALUES(3, 'lname', 'Bartlow')[0m
+  [4;36;1mDbAttribute Create (0.1ms)[0m   [0;1mINSERT INTO "db_attributes" ("db_object_id", "key", "value") VALUES(3, 'phone', '8675309')[0m

@@ -66,6 +66,12 @@ Total Insanity
       t.string :key
       t.string :value
     end
+
+    create_table :db_associations, :force => true do |t|
+      t.string  :type
+      t.integer :parent_id
+      t.integer :child_id
+    end
     
     class DbObject < ActiveRecord::Base
       has_many :db_attributes, :autosave => true
@@ -78,25 +84,63 @@ Total Insanity
           end
         end
       end
+
+      def self.schemaless_association(assoc_name, source)
+        schemaless_symbol = (assoc_name.to_s + "_schemaless").to_sym
+        klass_name = assoc_name.to_s.classify
+        self.const_set(klass_name, Class.new(DbAssociation))
+        self.has_many schemaless_symbol, :class_name => klass_name, 
+          :foreign_key => :parent_id
+        self.has_many assoc_name,
+          :through => schemaless_symbol,
+          :source  => source
+      end
+
+      def self.schemaless_has_many(assoc_name)
+        schemaless_association(assoc_name, :child)
+      end
+
+      def self.schemaless_belongs_to(assoc_name)
+        schemaless_association(assoc_name, :parent)
+      end
     end
 
     # id, db_object_id, key, value
     class DbAttribute < ActiveRecord::Base
       belongs_to :db_object
     end
+
+    class DbAssociation < ActiveRecord::Base
+      belongs_to :parent, :class_name => "DbObject"
+      belongs_to :child,  :class_name => "DbObject"
+    end
     
 And now we can generate a bunch of schemaless classes:
 
-    Person = Class.new(DbObject) do
-      has_attributes :fname, :lname, :phone
-    end
-    
-    Driver = Class.new(Person) do
-      has_attributes :license_number
-    end
-    
-    Address = Class.new(DbObject) do
-      has_attributes :number, :street, :city, :state, :zip
+    class TotalInsanityTest < Test::Unit::TestCase
+      include ActiveSupport::Testing::Assertions
+      class Person < DbObject
+        has_attributes :fname, :lname, :phone
+        schemaless_has_many :shit
+      end
+  
+      class Crap < DbObject
+        has_attributes :name, :description
+        schemaless_belongs_to :person
+      end
+  
+      should "allow me to use a person as if it had real attrs" do
+        p = Person.create(:fname => "Alex", 
+          :lname => "Bartlow", :phone => '8675309')
+        assert_equal "Alex", p.fname
+      end
+  
+      should "allow me to associate crap to a person" do 
+        p = Person.create
+        p.shit << Crap.new
+        p.save
+        assert_equal 1, Person.find(p).shit.size
+      end
     end
     
 Adding associations is an exercise to the reader.
