@@ -39,6 +39,10 @@ class VerticalTableTest < Test::Unit::TestCase
       end
     end
     
+    should "define before_typecast for rails" do
+      assert Normal.instance_methods.include?("stat_str_before_type_cast".to_sym)
+    end
+    
     should "give the base class getter methods" do
       %w{stat_str stat_dex stat_wis stat_int stat_cha}.each do |s|
         assert Normal.instance_methods.include?(s.to_sym)

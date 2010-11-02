@@ -1,5 +1,5 @@
 require 'rubygems'
-gem 'rails', '2.3.5'
+gem 'rails', '~>2.3'
 require 'active_support'
 require 'active_support/testing/assertions'
 require 'active_record'
@@ -59,23 +59,38 @@ class DbObject < ActiveRecord::Base
     end
   end
   
-  def self.schemaless_association(assoc_name, source)
+  def self.define_association_class(parent_class_name, child_class_name)
+    name = parent_class_name + "_" + child_class_name
+    name = name.classify
+  
+    unless self.const_defined(name)
+      self.const_set(name, Class.new(DbAssociation))
+    end
+    name
+  end
+  
+  def self.schemaless_has_many(assoc_name, klass)
     schemaless_symbol = (assoc_name.to_s + "_schemaless").to_sym
-    klass_name = assoc_name.to_s.classify
-    self.const_set(klass_name, Class.new(DbAssociation))
-    self.has_many schemaless_symbol, :class_name => klass_name, 
+    
+    association_class_name = klass.constantize.define_association_class(self.to_s, klass)
+  
+    self.has_many schemaless_symbol, :class_name => association_class_name, 
       :foreign_key => :parent_id
     self.has_many assoc_name,
       :through => schemaless_symbol,
-      :source  => source
+      :source  => :child
   end
   
-  def self.schemaless_has_many(assoc_name)
-    schemaless_association(assoc_name, :child)
-  end
-  
-  def self.schemaless_belongs_to(assoc_name)
-    schemaless_association(assoc_name, :parent)
+  def self.schemaless_belongs_to(assoc_name, klass)
+    schemaless_symbol = (assoc_name.to_s + "_schemaless").to_sym
+    
+    association_class_name = klass.constantize.define_association_class(klass, self.to_s)
+    
+    self.has_many schemaless_symbol, :class_name => association_class_name, 
+      :foreign_key => :parent_id
+    self.has_many assoc_name,
+      :through => schemaless_symbol,
+      :source  => :parent
   end
 end
 

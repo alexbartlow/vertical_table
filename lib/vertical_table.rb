@@ -56,6 +56,8 @@ module VerticalTable
             x.send(set_val, value)
             instance_variable_set("@#{sym.to_s}", value)
           end
+          
+          alias_method sym.to_s + "_before_type_cast", sym
         end
       end
     end
