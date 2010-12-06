@@ -97,6 +97,14 @@ class VerticalTableTest < Test::Unit::TestCase
       assert_equal "stat_int", obj.preference_type
     end
     
+    should "Add the virtual attributes to the attributes hash" do
+      assert @normal.attributes.has_key?(:stat_int)
+    end
+    
+    should "Still keep the normal attributes" do
+      assert @normal.attributes.has_key?(:name), "Expected attributes to have name, instead was #{@normal.attributes.inspect}"
+    end
+    
     should "be able to set a vertical attribute using a custom value field" do
       assert_difference 'WierdVertical.count' do
         @normal.stat_int = 18

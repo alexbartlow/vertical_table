@@ -11,20 +11,35 @@ module VerticalTable
         raise AssociationMismatch unless [
           :has_many, :has_and_belongs_to_many
         ].include? self.reflections[assoc].macro
-        yield VerticalTable::Attributes::MethodBuilder.new(assoc, self, opts)
+        b = VerticalTable::Attributes::MethodBuilder.new(assoc, self, opts)
+        yield b
+        
+        if self.instance_methods.include?(:attributes)
+          old_attributes = instance_method(:attributes)
+          undef_method(:attributes)
+          
+          define_method(:attributes) do
+            virtual_attributes = b.new_attributes.inject({}) do |hsh, nattr|
+              hsh.update({nattr => self.send(nattr)})
+            end
+            old_attributes.bind(self).call().update(virtual_attributes).with_indifferent_access
+          end
+        end
       end
     end
     
     class MethodBuilder
-      attr_accessor :assoc, :base, :opts
+      attr_accessor :assoc, :base, :opts, :new_attributes
       def initialize(association_name, base, opts)
         @assoc, @base, @opts = association_name, base, opts
+        @new_attributes = []
         @opts[:value_attribute] ||= :value
         @opts[:value_attribute_get] ||= @opts[:value_attribute]
         @opts[:value_attribute_set] ||= (@opts[:value_attribute].to_s + "=").to_sym
       end
       
       def method_missing(sym, *args, &blk)
+        @new_attributes << sym
         assoc, base = @assoc, @base
         scope = args.extract_options!
         
