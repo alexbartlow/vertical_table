@@ -53,19 +53,19 @@ module VerticalTable
         set_val = @opts[:value_attribute_set]
         @base.class_eval do
           define_method sym.to_s + "_object" do
-            self.send(assoc).all.find do |candidate|
+            object ||= self.instance_variable_get("@#{sym.to_s}_object")
+            object ||= self.send(assoc).all.find do |candidate|
               create_scope.keys.all? do |key|
                 candidate.send(key).to_s == create_scope[key].to_s
               end
-            end
+            end 
+            object ||= self.send(assoc).build(create_scope)
           end
           define_method sym do
-            o = self.send(sym.to_s + "_object")
+            self.send(sym.to_s + "_object").try(:send, get_val)
           end
           define_method (sym.to_s + "=").to_sym do |value|
-            x = self.send(sym.to_s + "_object") ||
-              self.send(assoc).build(create_scope)
-            x.send(set_val, value)
+            self.send(sym.to_s + "_object").try(:send, set_val, value)
           end
           
           alias_method sym.to_s + "_before_type_cast", sym
