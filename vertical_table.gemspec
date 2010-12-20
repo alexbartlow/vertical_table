@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name = "vertical_table"
-  s.version = "0.1.3"
-  s.date    = "2010-12-06"
+  s.version = "0.1.4"
+  s.date    = "2010-12-20"
   
   s.description = "Uses an association to provide 'virtual' attributes on a model through the use of a veritcal table. Great for 'Preferences' type situations."
   s.summary = "Quick and easy way persistant virtual attributes."

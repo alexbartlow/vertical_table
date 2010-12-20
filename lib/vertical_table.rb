@@ -60,16 +60,12 @@ module VerticalTable
             end
           end
           define_method sym do
-            value = instance_variable_get("@#{sym.to_s}")
-            return value if value
             o = self.send(sym.to_s + "_object")
-            instance_variable_set("@#{sym.to_s}", o.send(get_val)) if o
           end
           define_method (sym.to_s + "=").to_sym do |value|
             x = self.send(sym.to_s + "_object") ||
               self.send(assoc).build(create_scope)
             x.send(set_val, value)
-            instance_variable_set("@#{sym.to_s}", value)
           end
           
           alias_method sym.to_s + "_before_type_cast", sym
