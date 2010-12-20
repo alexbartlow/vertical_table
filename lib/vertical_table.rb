@@ -61,7 +61,7 @@ module VerticalTable
             end 
             object ||= self.send(assoc).build(create_scope)
             if object
-              self.instance_variable_set("@#{sym.to_s}_object")
+              self.instance_variable_set("@#{sym.to_s}_object", object)
             end
             object
           end
