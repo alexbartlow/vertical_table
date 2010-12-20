@@ -60,6 +60,10 @@ module VerticalTable
               end
             end 
             object ||= self.send(assoc).build(create_scope)
+            if object
+              self.instance_variable_set("@#{sym.to_s}_object")
+            end
+            object
           end
           define_method sym do
             self.send(sym.to_s + "_object").try(:send, get_val)
