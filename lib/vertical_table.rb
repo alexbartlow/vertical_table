@@ -16,11 +16,9 @@ module VerticalTable
         
         if self.instance_methods.include?(:attributes)
           old_attributes = instance_method(:attributes)
-          undef_method(:attributes)
-          
-          define_method(:attributes) do
+          define_method(:attributes_with_vertical) do
             virtual_attributes = b.new_attributes.inject({}) do |hsh, nattr|
-              hsh.update({nattr => self.send(nattr)})
+              hsh.update({nattr => self.send(nattr.to_s + "_object").send(opts[:value_attribute_get])})
             end
             old_attributes.bind(self).call().update(virtual_attributes).with_indifferent_access
           end
@@ -53,16 +51,12 @@ module VerticalTable
         set_val = @opts[:value_attribute_set]
         @base.class_eval do
           define_method sym.to_s + "_object" do
-            object ||= self.instance_variable_get("@#{sym.to_s}_object")
-            object ||= self.send(assoc).all.find do |candidate|
+            object ||= self.send(assoc).detect do |candidate|
               create_scope.keys.all? do |key|
                 candidate.send(key).to_s == create_scope[key].to_s
               end
             end 
             object ||= self.send(assoc).build(create_scope)
-            if object
-              self.instance_variable_set("@#{sym.to_s}_object", object)
-            end
             object
           end
           define_method sym do

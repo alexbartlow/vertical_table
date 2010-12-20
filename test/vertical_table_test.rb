@@ -98,11 +98,11 @@ class VerticalTableTest < Test::Unit::TestCase
     end
     
     should "Add the virtual attributes to the attributes hash" do
-      assert @normal.attributes.has_key?(:stat_int)
+      assert @normal.attributes_with_vertical.has_key?(:stat_int)
     end
     
     should "Still keep the normal attributes" do
-      assert @normal.attributes.has_key?(:name), "Expected attributes to have name, instead was #{@normal.attributes.inspect}"
+      assert @normal.attributes_with_vertical.has_key?(:name), "Expected attributes to have name, instead was #{@normal.attributes.inspect}"
     end
     
     should "be able to set a vertical attribute using a custom value field" do
